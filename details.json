@@ -13,10 +13,6 @@
     {
       "name": "feed_url",
       "value": ""
-    },
-    {
-      "name": "number_of_items",
-      "value": 0
     }
   ],
   "dependencies": {
