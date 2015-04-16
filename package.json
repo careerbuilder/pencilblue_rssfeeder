@@ -1,0 +1,19 @@
+{
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/silverelizard/pencilblue_rssfeeder"
+  },
+  "devDependencies": {
+    "chai": "^1.10.0",
+    "istanbul": "^0.3.7",
+    "mocha": "^2.1.0",
+    "mocha-istanbul": "^0.2.0",
+    "sinon": "^1.12.2"
+  },
+  "dependencies": {
+    "xml2js": "^0.4.6"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --recursive --reporter nyan"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "uid": "rssfeeder",
+  "name": "RSS Feeder Plugin",
+  "description": "Gives access to RSS feed as json.",
+  "version": "0.1.0",
+  "pb_version": "0.4.x",
+  "author": {
+    "name": "Corrine Olson",
+    "email": "corrine.olson@careerbuilder.com",
+    "website": ""
+  },
+  "settings": [
+    {
+      "name": "feed_url",
+      "value": ""
+    },
+    {
+      "name": "number_of_items",
+      "value": 0
+    }
+  ],
+  "dependencies": {
+    "xml2js": "^0.4.6"
+  },
+  "permissions": { },
+  "main_module": {
+    "path": "rssfeeder.js"
+  }
+}
