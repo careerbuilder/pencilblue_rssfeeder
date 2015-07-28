@@ -13,7 +13,7 @@ module.exports = function RSSFeederServiceModule(pb) {
     return "rssFeederService";
   };
 
-  RSSFeederService.prototype.getFeed = function(cb, site){
+  RSSFeederService.prototype.getFeed = function(site, cb){
     this.site = site;
     getSettings(this, function(err, settings) {
       if(err) {
