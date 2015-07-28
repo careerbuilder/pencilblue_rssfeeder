@@ -13,8 +13,9 @@ module.exports = function RSSFeederServiceModule(pb) {
     return "rssFeederService";
   };
 
-  RSSFeederService.prototype.getFeed = function(cb){
-    getSettings(function(err, settings) {
+  RSSFeederService.prototype.getFeed = function(cb, site){
+    this.site = site;
+    getSettings(this, function(err, settings) {
       if(err) {
         cb(null);
       }
@@ -57,8 +58,8 @@ module.exports = function RSSFeederServiceModule(pb) {
     });
   }
   
-  function getSettings(cb) {
-    var pluginService = new pb.PluginService();
+  function getSettings(self, cb) {
+    var pluginService = new pb.PluginService(self.site);
     pluginService.getSettingsKV('rssfeeder', function(err, rssFeederSettings) {
       if (util.isError(err)) {
         cb(err, null);
