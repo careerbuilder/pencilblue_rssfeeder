@@ -2,9 +2,17 @@ module.exports = function RSSFeederServiceModule(pb) {
   var request = require('request'),
     parseString = require('xml2js').parseString,
     util = pb.util;
+
   function RSSFeederService(options)
   {
-    this.site = options.site ? options.site : "";
+    if(options)
+    {
+      this.site = options.site ? options.site : "";
+    }
+    else
+    {
+      this.site = "";
+    }
   }
 
   RSSFeederService.init = function(cb){
