@@ -2,7 +2,10 @@ module.exports = function RSSFeederServiceModule(pb) {
   var request = require('request'),
     parseString = require('xml2js').parseString,
     util = pb.util;
-  function RSSFeederService(){}
+  function RSSFeederService(options)
+  {
+    this.site = options.site ? options.site : "";
+  }
 
   RSSFeederService.init = function(cb){
     pb.log.debug("RSSFeederService: Initialized");
@@ -13,8 +16,7 @@ module.exports = function RSSFeederServiceModule(pb) {
     return "rssFeederService";
   };
 
-  RSSFeederService.prototype.getFeed = function(site, cb){
-    this.site = site;
+  RSSFeederService.prototype.getFeed = function(cb){
     getSettings(this, function(err, settings) {
       if(err) {
         cb(null);
