@@ -76,7 +76,7 @@ describe('RSS Feeder Service', function () {
     });
   });
 
-  it('should return noting if an error is thrown from the parseString function', function(done){
+  it('should return nothing if an error is thrown from the parseString function', function(done){
     rssFeederService.getFeed(function(rssfeed) {
       expect(rssfeed).to.equal(null);
       done();
