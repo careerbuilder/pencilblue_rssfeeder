@@ -3,14 +3,11 @@ module.exports = function RSSFeederServiceModule(pb) {
     parseString = require('xml2js').parseString,
     util = pb.util;
 
-  function RSSFeederService(options)
-  {
-    if(options)
-    {
+  function RSSFeederService(options){
+    if(options){
       this.site = options.site ? options.site : "";
     }
-    else
-    {
+    else{
       this.site = "";
     }
   }
