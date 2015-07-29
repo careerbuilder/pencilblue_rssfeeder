@@ -15,15 +15,29 @@ describe('RSS Feeder Service', function () {
     requestStub = sinon.stub(request, 'get');
     requestStub.withArgs('valid_feed_url').yields(null, {statusCode: 200}, getValidXML());
     requestStub.withArgs('invalid_feed_url').yields(new Error(), {statusCode: 500}, null);
+    requestStub.withArgs('to_break_praser').yields(null, {statusCode: 200}, 2);
     pluginSettingStub = sinon.stub(pb.PluginService.prototype, 'getSettingsKV');
     pluginSettingStub.onCall(0).yields(null, getValidSettingResponse());
     pluginSettingStub.onCall(1).yields(null, getInvalidSettingResponse());
+    pluginSettingStub.onCall(2).yields(new Error(), "");
+    pluginSettingStub.onCall(3).yields(null, getParseBreakingResponse());
   });
 
   it('should be a RSSFeederService object', function () {
     expect(rssFeederService).to.be.instanceof(RSSFeederService);
   });
-  
+
+  it('should store the site id if one is provided', function(done){
+    var rssSiteGiven = new RSSFeederService({site:"SOMERANDOMID"});
+    expect(rssSiteGiven.site).to.equal("SOMERANDOMID");
+    done();
+  });
+  it('should store an empty string if site is not provided but an option exists', function(done){
+    var rssSiteGiven = new RSSFeederService({blargh:"NOT AN ID"});
+    expect(rssSiteGiven.site).to.equal("");
+    done();
+  });
+
   it('should have name', function() {
     var name = RSSFeederService.getName();
     expect(name).to.equal('rssFeederService');
@@ -36,7 +50,8 @@ describe('RSS Feeder Service', function () {
       done();
     });
   });
-  
+
+  // Call 0 to settingsKV
   it('should get feed', function(done) {
     rssFeederService.getFeed(function(rssfeed) {
       expect(rssfeed).to.not.equal(null);
@@ -44,14 +59,29 @@ describe('RSS Feeder Service', function () {
       done();
     });
   });
-  
+
+  // Call 1 to settingsKV
   it('should return nothing if feed invalid', function(done) {
     rssFeederService.getFeed(function(rssfeed) {
       expect(rssfeed).to.equal(null);
       done();
     });
   });
-  
+
+  // Call 2 to settingsKV
+  it('should return nothing if error is caught in Settings KV invalid', function(done) {
+    rssFeederService.getFeed(function(rssfeed) {
+      expect(rssfeed).to.equal(null);
+      done();
+    });
+  });
+
+  it('should return nothing if an error is thrown from the parseString function', function(done){
+    rssFeederService.getFeed(function(rssfeed) {
+      expect(rssfeed).to.equal(null);
+      done();
+    });
+  });
   after(function() {
     pluginSettingStub.restore();
   });
@@ -67,6 +97,11 @@ function getInvalidSettingResponse() {
   return {
     feed_url:"invalid_feed_url"
   };
+}
+function getParseBreakingResponse(){
+  return {
+    feed_url:"to_break_praser"
+  }
 }
 
 function getValidXML() {
