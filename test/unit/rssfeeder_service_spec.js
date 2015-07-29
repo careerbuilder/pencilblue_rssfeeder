@@ -32,7 +32,7 @@ describe('RSS Feeder Service', function () {
     expect(rssSiteGiven.site).to.equal("SOMERANDOMID");
     done();
   });
-  it('should store the an empty string if site is not provided but an option exists', function(done){
+  it('should store an empty string if site is not provided but an option exists', function(done){
     var rssSiteGiven = new RSSFeederService({blargh:"NOT AN ID"});
     expect(rssSiteGiven.site).to.equal("");
     done();
