@@ -1,5 +1,5 @@
 {
-  "uid": "rssfeeder",
+  "uid": "pencilblue_rssfeeder",
   "name": "RSS Feeder Plugin",
   "description": "Gives access to RSS feed as json.",
   "version": "0.1.0",
