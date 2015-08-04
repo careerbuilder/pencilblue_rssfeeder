@@ -38,7 +38,7 @@ describe('RSS Feeder Service', function () {
   });
   
   it('should get feed', function(done) {
-    rssFeederService.getFeed(function(rssfeed) {
+    rssFeederService.getFeed(rssFeederService, function(rssfeed) {
       expect(rssfeed).to.not.equal(null);
       expect(rssfeed.rss.channel[0].item).to.have.length.above(0);
       done();
@@ -46,7 +46,7 @@ describe('RSS Feeder Service', function () {
   });
   
   it('should return nothing if feed invalid', function(done) {
-    rssFeederService.getFeed(function(rssfeed) {
+    rssFeederService.getFeed(rssFeederService, function(rssfeed) {
       expect(rssfeed).to.equal(null);
       done();
     });
