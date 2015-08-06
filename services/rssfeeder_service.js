@@ -16,7 +16,7 @@ module.exports = function RSSFeederServiceModule(pb) {
   RSSFeederService.prototype.getFeed = function(cb){
     getSettings(function(err, settings) {
       if(err) {
-        cb(null);
+        cb(new Error('RSS Feeder Plugin Error ', 'rssfeederPluginError'), null);
       }
       else {
         getRSSFeed(settings.feed_url, cb);
@@ -27,7 +27,7 @@ module.exports = function RSSFeederServiceModule(pb) {
   function getRSSFeed(url, cb) {
     getRawFeed(url, function(rawFeed) {
       if(rawFeed == null) {
-        cb(null);
+        cb(new Error('RSS Feeder Plugin Error ', 'rssfeederPluginError'), null);
       }
       else {
         parseRSSFeed(rawFeed, cb);
@@ -38,7 +38,7 @@ module.exports = function RSSFeederServiceModule(pb) {
   function parseRSSFeed(rawFeed, cb) {
     parseString(rawFeed, function (err, parsedFeed) {
       if(err) {
-        cb(null);
+        cb(new Error('RSS Feeder Plugin Error ', 'rssfeederPluginError'), null);
       }
       else {
         cb(parsedFeed);
@@ -49,7 +49,7 @@ module.exports = function RSSFeederServiceModule(pb) {
   function getRawFeed(url, cb) {
     request.get(url, function (err, response, body) {
       if(err || response.statusCode != 200) {
-        cb(null);
+        cb(new Error('RSS Feeder Plugin Status Code: ' + response.statusCode, 'rssfeederPluginError'), null);
       }
       else {
         cb(body);
