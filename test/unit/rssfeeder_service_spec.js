@@ -45,9 +45,10 @@ describe('RSS Feeder Service', function () {
     });
   });
   
-  it('should return nothing if feed invalid', function(done) {
-    rssFeederService.getFeed(function(rssfeed) {
+  it('should call back with error if feed invalid', function(done) {
+    rssFeederService.getFeed(function(err, rssfeed) {
       expect(rssfeed).to.equal(null);
+      expect(err).to.be.an.instanceOf(Error);
       done();
     });
   });
