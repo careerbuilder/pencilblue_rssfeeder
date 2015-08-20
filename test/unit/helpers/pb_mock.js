@@ -7,6 +7,9 @@ module.exports.getMockPB = function () {
       error: function () {},
       debug: function() {}
     },
+    SiteService: {
+      GLOBAL_SITE:'global'
+    },
     PluginService: pluginService,
     util : util
   };
