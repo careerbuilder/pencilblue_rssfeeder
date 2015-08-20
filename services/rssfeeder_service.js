@@ -4,11 +4,10 @@ module.exports = function RSSFeederServiceModule(pb) {
     util = pb.util;
 
   function RSSFeederService(options){
-    if(options){
-      this.site = options.site ? options.site : "";
-    }
-    else{
-      this.site = "";
+    if (options) {
+      this.site = options.site || pb.SiteService.GLOBAL_SITE;
+    } else {
+      this.site = pb.SiteService.GLOBAL_SITE;
     }
   }
 
@@ -66,8 +65,8 @@ module.exports = function RSSFeederServiceModule(pb) {
   }
   
   function getSettings(self, cb) {
-    var pluginService = new pb.PluginService(self.site);
-    pluginService.getSettingsKV('rssfeeder', function(err, rssFeederSettings) {
+    var pluginService = new pb.PluginService({site:self.site});
+    pluginService.getSettingsKV('pencilblue_rssfeeder', function(err, rssFeederSettings) {
       if (util.isError(err)) {
         cb(err, null);
       }
