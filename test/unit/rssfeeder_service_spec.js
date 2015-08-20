@@ -11,7 +11,7 @@ describe('RSS Feeder Service', function () {
       requestStub;
 
   before(function () {
-    rssFeederService = new RSSFeederService();
+    rssFeederService = new RSSFeederService({site:'notarealsite'});
     requestStub = sinon.stub(request, 'get');
     requestStub.withArgs('valid_feed_url').yields(null, {statusCode: 200}, getValidXML());
     requestStub.withArgs('invalid_feed_url').yields(new Error(), {statusCode: 500}, null);
@@ -32,9 +32,9 @@ describe('RSS Feeder Service', function () {
     expect(rssSiteGiven.site).to.equal("SOMERANDOMID");
     done();
   });
-  it('should store an empty string if site is not provided but an option exists', function(done){
+  it('should default site to global', function(done){
     var rssSiteGiven = new RSSFeederService({blargh:"NOT AN ID"});
-    expect(rssSiteGiven.site).to.equal("");
+    expect(rssSiteGiven.site).to.equal("global");
     done();
   });
 
@@ -53,7 +53,7 @@ describe('RSS Feeder Service', function () {
 
   // Call 0 to settingsKV
   it('should get feed', function(done) {
-    rssFeederService.getFeed(rssFeederService, function(rssfeed) {
+    rssFeederService.getFeed(function(rssfeed) {
       expect(rssfeed).to.not.equal(null);
       expect(rssfeed.rss.channel[0].item).to.have.length.above(0);
       done();
@@ -62,7 +62,7 @@ describe('RSS Feeder Service', function () {
 
   // Call 1 to settingsKV
   it('should return nothing if feed invalid', function(done) {
-    rssFeederService.getFeed(rssFeederService, function(rssfeed) {
+    rssFeederService.getFeed(function(rssfeed) {
       expect(rssfeed).to.equal(null);
       done();
     });
