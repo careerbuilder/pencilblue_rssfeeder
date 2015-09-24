@@ -15,6 +15,7 @@
     "request": "^2.51.0"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha --recursive --reporter nyan"
+    "test": "./node_modules/.bin/mocha --recursive",
+    "posttest": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --recursive --reporter base; genhtml coverage/lcov.info --output-directory reports/"
   }
 }
