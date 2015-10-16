@@ -16,9 +16,10 @@
     }
   ],
   "dependencies": {
-    "xml2js": "^0.4.6"
+    "xml2js": "^0.4.6",
+    "moment": "2.10.2"
   },
-  "permissions": { },
+  "permissions": {},
   "main_module": {
     "path": "rssfeeder.js"
   }

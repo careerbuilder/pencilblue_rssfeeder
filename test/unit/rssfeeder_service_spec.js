@@ -120,10 +120,6 @@ describe('RSS Feeder Service', function () {
       done();
     });
   });
-
-  after(function () {
-    pluginSettingStub.restore();
-  });
 });
 
 function getValidParsedString() {
