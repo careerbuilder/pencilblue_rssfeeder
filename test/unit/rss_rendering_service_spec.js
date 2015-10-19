@@ -1,5 +1,5 @@
-var pb = require('./../../../careerbuilder_careers/test/unit/helpers/pb_mock').getMockPB();
-var rssFeedMock = require('./../../../careerbuilder_careers/test/unit/helpers/rss_feed_mock').feeds;
+var pb = require('./helpers/pb_mock').getMockPB();
+var rssFeedMock = require('./helpers/rss_feed_mock').feeds;
 var chai = require('chai');
 var expect = chai.expect;
 var sinon = require('sinon');
