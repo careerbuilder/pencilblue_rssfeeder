@@ -22,9 +22,6 @@ describe('RSS Rendering Service', function () {
     var pluginServiceStub = sandbox.stub(pb.PluginService, 'getService');
     pluginServiceStub.withArgs("rssFeederService", "pencilblue_rssfeeder").returns(RSSFeederService);
 
-    isActivePluginStub = sandbox.stub(pb.PluginService, 'isActivePlugin');
-    isActivePluginStub.returns(true);
-
     registerLocalStub = sandbox.stub(pb.TemplateService.prototype, "registerLocal");
     registerLocalFunction = pb.TemplateService.prototype.registerLocal;
 
@@ -99,17 +96,6 @@ describe('RSS Rendering Service', function () {
 
   it('should render nothing if response is empty', function (done) {
     getFeedStub.yields(null, rssFeedMock.emptyResponse);
-    rssRenderingService.render(function (err, templateValue) {
-      expect(err).to.equal(null);
-      expect(templateValue).to.not.equal(null);
-      expect(templateValue).to.equal('');
-      done();
-    });
-  });
-
-  it('should render nothing if plugin is not active', function(done) {
-    isActivePluginStub.returns(false);
-    getFeedStub.yields(null, rssFeedMock.validResponse);
     rssRenderingService.render(function (err, templateValue) {
       expect(err).to.equal(null);
       expect(templateValue).to.not.equal(null);

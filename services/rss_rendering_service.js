@@ -22,25 +22,21 @@ module.exports = function RSSRenderingServiceModule(pb) {
 
   RSSRenderingService.prototype.render = function(cb) {
     var self = this;
-    if(pb.PluginService.isActivePlugin('pencilblue_rssfeeder', self.site)) {
-      getFeed(self, function(err, feed) {
-        if(!err && feed[0] && feed[0].item) {
-          var post = feed[0].item[0];
-          var posted = getTimeFromNow(post.pubDate[0]);
-          var jts = new pb.TemplateService({ls:self.ls, site:self.site});
-          jts.reprocess = false;
-          jts.registerLocal('blog_url', feed[0].link[0]);
-          jts.registerLocal('post_text', getPostPreview(post.description[0]));
-          jts.registerLocal('post_url', post.link[0]);
-          jts.registerLocal('post_posted', posted);
-          jts.load('elements/rss', cb);
-        } else {
-          cb (null, '');
-        }
-      });
-    } else {
-      cb(null, '');
-    }
+    getFeed(self, function(err, feed) {
+      if(!err && feed[0] && feed[0].item) {
+        var post = feed[0].item[0];
+        var posted = getTimeFromNow(post.pubDate[0]);
+        var jts = new pb.TemplateService({ls:self.ls, site:self.site});
+        jts.reprocess = false;
+        jts.registerLocal('blog_url', feed[0].link[0]);
+        jts.registerLocal('post_text', getPostPreview(post.description[0]));
+        jts.registerLocal('post_url', post.link[0]);
+        jts.registerLocal('post_posted', posted);
+        jts.load('elements/rss', cb);
+      } else {
+        cb (null, '');
+      }
+    });
   };
   
   function getPostPreview(text) {
