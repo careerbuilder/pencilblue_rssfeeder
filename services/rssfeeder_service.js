@@ -1,6 +1,6 @@
 module.exports = function RSSFeederServiceModule(pb) {
   var request = require('request'),
-    parseString = require('xml2js').parseString,
+    xml2js = require('xml2js'),
     util = pb.util;
 
   function RSSFeederService(options){
@@ -23,7 +23,7 @@ module.exports = function RSSFeederServiceModule(pb) {
   RSSFeederService.prototype.getFeed = function(cb){
     getSettings(this, function(err, settings) {
       if(err) {
-        cb(null);
+        cb(err, null);
       }
       else {
         getRSSFeed(settings.feed_url, cb);
@@ -32,23 +32,31 @@ module.exports = function RSSFeederServiceModule(pb) {
   };
   
   function getRSSFeed(url, cb) {
-    getRawFeed(url, function(rawFeed) {
-      if(rawFeed == null) {
-        cb(null);
+    getRawFeed(url, function(err, rawFeed) {
+      if(err) {
+        cb(err, null);
       }
       else {
-        parseRSSFeed(rawFeed, cb);
+        if (rawFeed) {
+          parseRSSFeed(rawFeed, cb);
+        } else {
+          cb(null, '');
+        }
       }
     });
   }
   
   function parseRSSFeed(rawFeed, cb) {
-    parseString(rawFeed, function (err, parsedFeed) {
+    xml2js.parseString(rawFeed, function (err, parsedFeed) {
       if(err) {
-        cb(null);
+        cb(err, null);
       }
       else {
-        cb(parsedFeed);
+        if (parsedFeed && parsedFeed.rss && parsedFeed.rss.channel) {
+          cb(null, parsedFeed.rss.channel);
+        } else {
+          cb(new Error('No RSS Feed retrieved.'), null);
+        }
       }
     });
   }
@@ -56,10 +64,10 @@ module.exports = function RSSFeederServiceModule(pb) {
   function getRawFeed(url, cb) {
     request.get(url, function (err, response, body) {
       if(err || response.statusCode != 200) {
-        cb(null);
+        cb(err, null);
       }
       else {
-        cb(body);
+        cb(null, body);
       }
     });
   }
