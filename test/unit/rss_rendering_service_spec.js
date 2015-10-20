@@ -10,7 +10,6 @@ describe('RSS Rendering Service', function () {
     getFeedStub,
     registerLocalFunction,
     registerLocalStub,
-    isActivePluginStub,
     sandbox = sinon.sandbox.create();
 
   beforeEach(function () {
