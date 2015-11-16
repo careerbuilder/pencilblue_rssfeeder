@@ -1,5 +1,6 @@
 var pb = require('./helpers/pb_mock').getMockPB();
 var rssFeedMock = require('./helpers/rss_feed_mock').feeds;
+var moment = require('moment');
 var chai = require('chai');
 var expect = chai.expect;
 var sinon = require('sinon');
@@ -66,7 +67,7 @@ describe('RSS Rendering Service', function () {
       expect(registerLocalFunction.calledWith('blog_url', 'http://advice.careerbuilder.com')).to.equal(true);
       expect(registerLocalFunction.calledWith('post_text', 'This needs to be 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 words...')).to.equal(true);
       expect(registerLocalFunction.calledWith('post_url', 'http://advice.careerbuilder.com/posts/when-colleagues-become-friends')).to.equal(true);
-      expect(registerLocalFunction.calledWith('post_posted', '6 months ago')).to.equal(true);
+      expect(registerLocalFunction.calledWith('post_posted', getTimeFromNow(rssFeedMock.validResponse[0].item[0].pubDate))).to.equal(true);
       done();
     });
   });
@@ -102,4 +103,12 @@ describe('RSS Rendering Service', function () {
       done();
     });
   });
+
+  function getTimeFromNow(date) {
+    var parsedDate = moment(date, 'YYYY-MM-DDTHH:mm:ss.SSSZ', 'en');
+    if(parsedDate.isValid()) {
+      return parsedDate.fromNow();
+    }
+    return '';
+  }
 });
