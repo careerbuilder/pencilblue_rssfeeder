@@ -34,7 +34,14 @@ module.exports = function RSSRenderingServiceModule(pb) {
         jts.registerLocal('post_posted', posted);
         jts.load('elements/rss', cb);
       } else {
-        cb (null, '');
+        pb.log.error('rssfeeder error: ' + err);
+        var jts = new pb.TemplateService({ls:self.ls, site:self.site});
+        jts.reprocess = false;
+        jts.registerLocal('blog_url', '');
+        jts.registerLocal('post_text', 'RSS Feed is unavailable');
+        jts.registerLocal('post_url', '');
+        jts.registerLocal('post_posted', '');
+        jts.load('elements/rss', cb);
       }
     });
   };
