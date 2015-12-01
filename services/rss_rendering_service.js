@@ -38,7 +38,7 @@ module.exports = function RSSRenderingServiceModule(pb) {
         var jts = new pb.TemplateService({ls:self.ls, site:self.site});
         jts.reprocess = false;
         jts.registerLocal('blog_url', '');
-        jts.registerLocal('post_text', 'RSS Feed is unavailable');
+        jts.registerLocal('post_text', '^loc_RSS_ERROR^');
         jts.registerLocal('post_url', '');
         jts.registerLocal('post_posted', '');
         jts.load('elements/rss', cb);
