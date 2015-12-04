@@ -62,7 +62,7 @@ module.exports = function RSSFeederServiceModule(pb) {
   }
   
   function getRawFeed(url, cb) {
-    request.get(url, function (err, response, body) {
+    request.get(url, {timeout: 5000}, function (err, response, body) {
       if(err || response.statusCode != 200) {
         cb(err, null);
       }
