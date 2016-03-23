@@ -48,7 +48,7 @@ module.exports = function RSSRenderingServiceModule(pb) {
   };
 
   function getPostPreview(text) {
-    var text = text.replace(/(<([^>]+)>)/ig,"");
+    var text = text.replace(/(<([^>]+)>)/ig,""); // Removes all Tags like <xml>
     var words = text.split(' ');
     words.length = WORDS_PER_PREVIEW;
     return words.join(' ') + '...';
