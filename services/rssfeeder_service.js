@@ -1,3 +1,20 @@
+/*
+ Copyright (C) 2015  Careerbuilder, LLC
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 module.exports = function RSSFeederServiceModule(pb) {
   var request = require('request'),
     xml2js = require('xml2js'),
@@ -30,7 +47,7 @@ module.exports = function RSSFeederServiceModule(pb) {
       }
     });
   };
-  
+
   function getRSSFeed(url, cb) {
     getRawFeed(url, function(err, rawFeed) {
       if(err) {
@@ -45,7 +62,7 @@ module.exports = function RSSFeederServiceModule(pb) {
       }
     });
   }
-  
+
   function parseRSSFeed(rawFeed, cb) {
     xml2js.parseString(rawFeed, function (err, parsedFeed) {
       if(err) {
@@ -60,7 +77,7 @@ module.exports = function RSSFeederServiceModule(pb) {
       }
     });
   }
-  
+
   function getRawFeed(url, cb) {
     request.get(url, {timeout: 5000}, function (err, response, body) {
       if(err || response.statusCode != 200) {
@@ -71,7 +88,7 @@ module.exports = function RSSFeederServiceModule(pb) {
       }
     });
   }
-  
+
   function getSettings(self, cb) {
     var pluginService = new pb.PluginService({site:self.site});
     pluginService.getSettingsKV('pencilblue_rssfeeder', function(err, rssFeederSettings) {
