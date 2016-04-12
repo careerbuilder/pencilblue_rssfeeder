@@ -17,9 +17,16 @@
 
 module.exports = function RSSFeederServiceModule(pb) {
   var request = require('request'),
-    parseString = require('xml2js').parseString,
+    xml2js = require('xml2js'),
     util = pb.util;
-  function RSSFeederService(){}
+
+  function RSSFeederService(options){
+    if (options) {
+      this.site = options.site || pb.SiteService.GLOBAL_SITE;
+    } else {
+      this.site = pb.SiteService.GLOBAL_SITE;
+    }
+  }
 
   RSSFeederService.init = function(cb){
     pb.log.debug("RSSFeederService: Initialized");
@@ -31,52 +38,60 @@ module.exports = function RSSFeederServiceModule(pb) {
   };
 
   RSSFeederService.prototype.getFeed = function(cb){
-    getSettings(function(err, settings) {
+    getSettings(this, function(err, settings) {
       if(err) {
-        cb(new Error('RSS Feeder Plugin Error', 'rssfeederPluginError'), null);
+        cb(err, null);
       }
       else {
         getRSSFeed(settings.feed_url, cb);
       }
     });
   };
-  
+
   function getRSSFeed(url, cb) {
-    getRawFeed(url, function(rawFeed) {
-      if(rawFeed == null) {
-        cb(new Error('RSS Feeder Plugin Error', 'rssfeederPluginError'), null);
-      }
-      else {
-        parseRSSFeed(rawFeed, cb);
-      }
-    });
-  }
-  
-  function parseRSSFeed(rawFeed, cb) {
-    parseString(rawFeed, function (err, parsedFeed) {
+    getRawFeed(url, function(err, rawFeed) {
       if(err) {
-        cb(new Error('RSS Feeder Plugin Error', 'rssfeederPluginError'), null);
+        cb(err, null);
       }
       else {
-        cb(parsedFeed);
+        if (rawFeed) {
+          parseRSSFeed(rawFeed, cb);
+        } else {
+          cb(null, '');
+        }
       }
     });
   }
-  
+
+  function parseRSSFeed(rawFeed, cb) {
+    xml2js.parseString(rawFeed, function (err, parsedFeed) {
+      if(err) {
+        cb(err, null);
+      }
+      else {
+        if (parsedFeed && parsedFeed.rss && parsedFeed.rss.channel) {
+          cb(null, parsedFeed.rss.channel);
+        } else {
+          cb(new Error('No RSS Feed retrieved.'), null);
+        }
+      }
+    });
+  }
+
   function getRawFeed(url, cb) {
-    request.get(url, function (err, response, body) {
+    request.get(url, {timeout: 5000}, function (err, response, body) {
       if(err || response.statusCode != 200) {
-        cb(new Error('RSS Feeder Plugin Status Code: ' + response.statusCode, 'rssfeederPluginError'), null);
+        cb(err, null);
       }
       else {
-        cb(body);
+        cb(null, body);
       }
     });
   }
-  
-  function getSettings(cb) {
-    var pluginService = new pb.PluginService();
-    pluginService.getSettingsKV('rssfeeder', function(err, rssFeederSettings) {
+
+  function getSettings(self, cb) {
+    var pluginService = new pb.PluginService({site:self.site});
+    pluginService.getSettingsKV('pencilblue_rssfeeder', function(err, rssFeederSettings) {
       if (util.isError(err)) {
         cb(err, null);
       }

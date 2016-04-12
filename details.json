@@ -1,9 +1,9 @@
 {
-  "uid": "rssfeeder",
+  "uid": "pencilblue_rssfeeder",
   "name": "RSS Feeder Plugin",
   "description": "Gives access to RSS feed as json.",
   "version": "0.1.0",
-  "pb_version": "0.4.x",
+  "pb_version": "0.5.x",
   "author": {
     "name": "Corrine Olson",
     "email": "corrine.olson@careerbuilder.com",
@@ -16,9 +16,10 @@
     }
   ],
   "dependencies": {
-    "xml2js": "^0.4.6"
+    "xml2js": "^0.4.6",
+    "moment": "^2.10.6"
   },
-  "permissions": { },
+  "permissions": {},
   "main_module": {
     "path": "rssfeeder.js"
   }

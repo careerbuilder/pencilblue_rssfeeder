@@ -1,20 +1,22 @@
 {
   "repository": {
     "type": "git",
-    "url": "https://github.com/silverelizard/pencilblue_rssfeeder"
+    "url": "https://github.com/careerbuilder/pencilblue_rssfeeder"
   },
   "devDependencies": {
-    "chai": "^1.10.0",
-    "istanbul": "^0.3.7",
-    "mocha": "^2.1.0",
-    "mocha-istanbul": "^0.2.0",
-    "sinon": "^1.12.2"
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5",
+    "sinon": "^1.17.3",
+    "istanbul": "^0.4.2",
+    "mocha-istanbul": "^0.2.0"
   },
   "dependencies": {
-    "xml2js": "^0.4.6",
-    "request": "^2.51.0"
+    "xml2js": "^0.4.16",
+    "request": "^2.69.0",
+    "moment": "^2.11.2"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha --recursive --reporter nyan"
+    "test": "./node_modules/.bin/mocha --recursive --reporter nyan",
+    "posttest": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --recursive > /dev/null; genhtml coverage/lcov.info --output-directory reports/"
   }
 }
